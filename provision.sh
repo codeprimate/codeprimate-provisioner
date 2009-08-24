@@ -19,7 +19,7 @@ fi
 
 
 # Regenerate Bundle
-printf " * Initializing...\n"
+printf "=== Initializing...\n"
 PROVISIONER_PATH=`dirname $0`
 PROVISIONER_BUNDLE=/tmp/$SERVER/bundle.tgz
 PROVISIONER_BUNDLE_TMP=/tmp/$SERVER
@@ -45,21 +45,21 @@ printf "user: %s\nhost: %s" $USERNAME $SERVER >> $SERVER_CONF
 cd $PROVISIONER_BUNDLE_TMP
 tar czf $PROVISIONER_BUNDLE bundle/
 
-printf " * Copying public key to server...\n"
+printf "=== Copying public key to server...\n"
 if [ -e ~/.ssh/id_dsa.pub  -o -e ~/.ssh/id_rda.pub ] ; then
 	ssh root@$SERVER "mkdir ~/.ssh; mkdir bundle; echo "`cat ~/.ssh/id_dsa.pub ~/.ssh/id_rsa.pub`" >> ~/.ssh/authorized_keys2"
 fi
 
-printf " * Copying Server Setup Bundle...\n"
+printf "=== Copying Server Setup Bundle...\n"
 scp -q $PROVISIONER_BUNDLE root@$SERVER:/root/bundle.tgz
 
-printf " * Extract and run Server Setup Bundle..."
+printf "=== Extract and run Server Setup Bundle..."
 ssh root@$SERVER "tar xzf bundle.tgz; cd bundle; chmod u+x ./installer.sh; ./installer.sh"
 
 printf "Finished!!!\n\n"
 printf "Result log\n------------------------\n\n"
 ssh root@$SERVER "cat /root/bundle/log.txt"
-printf "\n\n--------------------------------\nEND."
+printf "\n\n--------------------------------\nEND.\n\n"
 
 
 # Cleanup
