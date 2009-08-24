@@ -1,0 +1,21 @@
+The Code Primate's Provisioner
+v.0.01A
+
+This script does 99% of the work to set up a Rails environment on a remote host.  It does the following:
+	- Copy your SSH public key to the root account of the specified server.
+	- Install necessary LAMR (LAMP - PHP + Rails) dependencies.
+	- Configure MySQL for a given username
+	- Install necessary gems
+	- Configure Apache for Phusion Passenger
+	- Create Apache VHost for user account.
+
+The current version is targeted specifically for Ubuntu 9.04 on Rackspace Cloud Servers.
+
+Usage:
+	Call ./provision.sh
+		
+=== WARNING ===
+This is ALPHA software.  USE AT YOUR OWN RISK!!!
+
+(c)2009 Patrick Morgan - codeprimate@patrick-morgan.net
+Usage is granted under the GPL (http://www.gnu.org/copyleft/gpl.html)

@@ -5,8 +5,8 @@ printf "Server Provisioner\n===================\n"
 if [ "$1" ]; then
 	SERVER = $!
 else
-	read -p "? Host Name or Address: " SERVER
-	read -p "? App username: " USERNAME
+	read -p "??? Host Name or Address: " SERVER
+	read -p "??? App username: " USERNAME
 fi
 if [ ! "$SERVER" ] ; then
 	printf "What server??? You fail.\n"
