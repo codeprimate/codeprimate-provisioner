@@ -4,7 +4,21 @@
 BUNDLE_PATH=/root/bundle
 LOG_PATH=$BUNDLE_PATH/log.txt
 
-INSTALL_PACKAGES="pwgen build-essential ruby1.8 ruby1.8-dev ri1.8 rdoc1.8 irb1.8 libreadline-ruby1.8 libruby1.8 libopenssl-ruby mysql-server mysql-client libmysqlclient15-dev libmagickcore-dev libmagickwand-dev apache2 postfix git-core subversion apache2-prefork-dev libapr1-dev libaprutil1-dev"
+INSTALL_PACKAGES="pwgen build-essential ruby1.8 ruby1.8-dev ri1.8 rdoc1.8 irb1.8 libreadline-ruby1.8 libruby1.8 libopenssl-ruby mysql-server mysql-client libmysqlclient15-dev apache2 postfix git-core subversion apache2-prefork-dev libapr1-dev libaprutil1-dev"
+U904="libmagickcore-dev libmagickwand-dev"
+U804="libmagick9-dev"
+
+LINUX_VERSION=`lsb_release -r | awk '{print $2}'`
+
+if [ LINUX_VERSION == "8.04" ]; then
+	INSTALL_PACKAGES="$INSTALL_PACKAGES $U804"
+fi
+	
+if [ LINUX_VERSION == "9.04" ]; then
+	INSTALL_PACKAGES="$INSTALL_PACKAGES $U804"
+fi
+
+
 INSTALL_GEMS="rmagick mysql mongrel rails passenger liquid"
 
 USERNAME=`cat $BUNDLE_PATH/bundle-conf.txt | grep user | awk '{print $2}'`
