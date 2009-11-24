@@ -8,7 +8,7 @@ INSTALL_PACKAGES="python2.6 libmagickcore-dev libmagickwand-dev pwgen build-esse
 
 LINUX_VERSION=`lsb_release -r | awk '{print $2}'`
 
-INSTALL_GEMS="rmagick mysql mongrel rails passenger liquid"
+INSTALL_GEMS="rmagick mysql mongrel rails passenger liquid gemcutter rspec rspec-rails jscruggs-metric_fu cucumber"
 
 USERNAME=`cat $BUNDLE_PATH/bundle-conf.txt | grep user | awk '{print $2}'`
 HOSTNAME=`cat $BUNDLE_PATH/bundle-conf.txt | grep host | awk '{print $2}'`
@@ -41,6 +41,7 @@ function mysql_setup {
 	mysql --password=$MYSQL_ROOT_PW -u root < $BUNDLE_PATH/mysql_setup.sql
 	mysqladmin --password=$MYSQL_ROOT_PW  -u root password "$MYSQL_ROOT_PW"
 	cat $BUNDLE_PATH/database.yml | sed -e "s/USERNAME/$USERNAME/g" -e "s/PASSWORD/$MYSQL_USER_PW/g" > /home/$USERNAME/site/production/shared/database.yml
+	chown $USERNAME /home/$USERNAME/site/production/shared/database.yml
 	printf "\nMySQL Root Password: %s\nMySQL %s password: %s" "$MYSQL_ROOT_PW" "$USERNAME" "$MYSQL_USER_PW" >> $LOG_PATH
 }
 
@@ -52,6 +53,7 @@ printf "\n===  Installing rubygems...\n"
 	gem source -a "http://gems.github.com/"
 	gem update --system
 	for gemname in "`echo $INSTALL_GEMS`"; do gem install $gemname --no-rdoc --no-ri;  done
+	gem tumble
 }
 
 function create_application_user {
@@ -70,7 +72,7 @@ function create_application_user {
 	cat $BUNDLE_PATH/passenger_logrotate | sed "s/USERNAME/$USERNAME/" > /etc/logrotate.d/passenger
 	mkdir /home/$USERNAME/backups
 	mkdir /home/$USERNAME/bin
-	cat $BUNDLE_PATH/db_backup.sh | sed -e "s/USERNAME/$USERNAME/" -e "s/MYSQL_USER_PW/$MYSQL_USER_PW/" > /home/$USERNAME/bin/db_backup.sh
+	cat $BUNDLE_PATH/db_backup.sh | sed -e "s/USERNAME/$USERNAME/g" -e "s/MYSQL_USER_PW/$MYSQL_USER_PW/g" > /home/$USERNAME/bin/db_backup.sh
 	chmod u+x /home/$USERNAME/bin/db_backup.sh
 }
 
