@@ -7,6 +7,8 @@ if [ "$1" ]; then
 else
 	read -p "??? Host Name or Address: " SERVER
 	read -p "??? App username: " USERNAME
+	read -p "??? MySQL Root Password: " MYSQL_ROOT_PASSWORD
+	read -p "??? Admin Contact (Email): " ADMIN_EMAIL
 fi
 if [ ! "$SERVER" ] ; then
 	printf "What server??? You fail.\n"
@@ -41,7 +43,7 @@ if [ -e "$SERVER_CONF" ] ; then
 	rm $SERVER_CONF
 fi
 touch $SERVER_CONF
-printf "user: %s\nhost: %s" $USERNAME $SERVER >> $SERVER_CONF
+printf "user: %s\nhost: %s\nmysql: %s" $USERNAME $SERVER $MYSQL_ROOT_PASSWORD >> $SERVER_CONF
 cd $PROVISIONER_BUNDLE_TMP
 tar czf $PROVISIONER_BUNDLE bundle/
 
