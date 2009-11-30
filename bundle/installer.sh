@@ -13,6 +13,8 @@ INSTALL_GEMS="rmagick mysql mongrel rails passenger liquid gemcutter rspec rspec
 USERNAME=`cat $BUNDLE_PATH/bundle-conf.txt | grep user | awk '{print $2}'`
 HOSTNAME=`cat $BUNDLE_PATH/bundle-conf.txt | grep host | awk '{print $2}'`
 MYSQL_ROOT_PW=`cat $BUNDLE_PATH/bundle-conf.txt | grep mysql | awk '{print $2}'`
+ADMIN_EMAIL=`cat $BUNDLE_PATH/bundle-conf.txt | grep admin_email | awk '{print $2}'`
+IP_ADDR=`ifconfig | perl -n -e '/inet addr:([0-9.]+) / && print "$1\n"' | head -n 1`
 
 # Misc Setup
 function misc_setup {
@@ -73,7 +75,7 @@ function create_application_user {
 	mkdir /home/$USERNAME/backups
 	mkdir /home/$USERNAME/bin
 	cat $BUNDLE_PATH/db_backup.sh | sed -e "s/USERNAME/$USERNAME/g" -e "s/MYSQL_USER_PW/$MYSQL_USER_PW/g" > /home/$USERNAME/bin/db_backup.sh
-	chmod u+x /home/$USERNAME/bin/db_backup.sh
+	chown -R $USERNAME /home/$USERNAME/bin /home/$USERNAME/backups /home/$USERNAME/bin
 }
 
 function apache_setup {
@@ -81,7 +83,7 @@ function apache_setup {
 	PASSENGER_VERSION="`gem list | grep passenger | sed  -n 's/.*(\([0-9]\{1,2\}.[0-9]\{1,2\}\.[0-9]\{1,2\}\)).*/\1/p'`"
 	cat $BUNDLE_PATH/passenger.conf | sed "s/PASSENGER_VERSION/$PASSENGER_VERSION/" > /etc/apache2/mods-available/passenger.conf
 	ln -sf /etc/apache2/mods-available/passenger.conf /etc/apache2/mods-enabled/passenger.conf
-	cat $BUNDLE_PATH/vhost | sed -e "s/USERNAME/$USERNAME/" -e "s/HOSTNAME/$HOSTNAME/" > /etc/apache2/sites-available/$USERNAME.vhost
+	cat $BUNDLE_PATH/vhost | sed -e "s/USERNAME/$USERNAME/" -e "s/HOSTNAME/$HOSTNAME/" -e "s/IP_ADDR/$IP_ADDR/"> /etc/apache2/sites-available/$USERNAME.vhost
 	ln -sf /etc/apache2/sites-available/$USERNAME.vhost /etc/apache2/sites-enabled/$USERNAME.vhost
 
 	APACHE_SERVERNAME="ServerName $HOSTNAME"

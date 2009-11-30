@@ -1,4 +1,4 @@
-<VirtualHost *:80>
+<VirtualHost IP_ADDR:80>
 	ServerAdmin webmaster@HOSTNAME
 	ServerName HOSTNAME
 	ServerAlias www.HOSTNAME

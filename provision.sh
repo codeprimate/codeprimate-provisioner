@@ -43,7 +43,7 @@ if [ -e "$SERVER_CONF" ] ; then
 	rm $SERVER_CONF
 fi
 touch $SERVER_CONF
-printf "user: %s\nhost: %s\nmysql: %s" $USERNAME $SERVER $MYSQL_ROOT_PASSWORD >> $SERVER_CONF
+printf "user: %s\nhost: %s\nmysql: %s\nadmin_email: %s" $USERNAME $SERVER $MYSQL_ROOT_PASSWORD $ADMIN_EMAIL >> $SERVER_CONF
 cd $PROVISIONER_BUNDLE_TMP
 tar czf $PROVISIONER_BUNDLE bundle/
 
