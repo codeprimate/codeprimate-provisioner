@@ -8,7 +8,7 @@ INSTALL_PACKAGES="python2.6 libmagickcore-dev libmagickwand-dev pwgen build-esse
 
 LINUX_VERSION=`lsb_release -r | awk '{print $2}'`
 
-INSTALL_GEMS="rmagick mysql mongrel rails passenger liquid gemcutter rspec rspec-rails jscruggs-metric_fu cucumber"
+INSTALL_GEMS="rmagick mysql mongrel rails passenger liquid gemcutter rspec rspec-rails jscruggs-metric_fu cucumber ar-extensions fastercsv faker"
 
 USERNAME=`cat $BUNDLE_PATH/bundle-conf.txt | grep user | awk '{print $2}'`
 HOSTNAME=`cat $BUNDLE_PATH/bundle-conf.txt | grep host | awk '{print $2}'`
