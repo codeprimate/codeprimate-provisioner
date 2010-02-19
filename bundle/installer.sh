@@ -40,8 +40,8 @@ function mysql_setup {
 	printf "\n=== Configuring MySQL and Application Database...\n"
 	MYSQL_USER_PW="`pwgen 10 1`"
 	sed -e "s/USERNAME/$USERNAME/g" -e "s/PASSWORD/$MYSQL_USER_PW/g" $BUNDLE_PATH/mysql.sql > $BUNDLE_PATH/mysql_setup.sql
-	mysql --password=$MYSQL_ROOT_PW -u root < $BUNDLE_PATH/mysql_setup.sql
-	mysqladmin --password=$MYSQL_ROOT_PW  -u root password "$MYSQL_ROOT_PW"
+	mysql -u root < $BUNDLE_PATH/mysql_setup.sql
+	mysqladmin -u root password "$MYSQL_ROOT_PW"
 	cat $BUNDLE_PATH/database.yml | sed -e "s/USERNAME/$USERNAME/g" -e "s/PASSWORD/$MYSQL_USER_PW/g" > /home/$USERNAME/site/production/shared/database.yml
 	chown $USERNAME /home/$USERNAME/site/production/shared/database.yml
 	printf "\nMySQL Root Password: %s\nMySQL %s password: %s" "$MYSQL_ROOT_PW" "$USERNAME" "$MYSQL_USER_PW" >> $LOG_PATH
@@ -109,3 +109,4 @@ create_application_user
 mysql_setup
 apache_setup
 postfix_setup
+history -c
